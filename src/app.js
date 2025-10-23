@@ -1,31 +1,30 @@
 import express from "express";
 import cors from "cors";
-
+import userRouter from "./routes/user.routes.js";
 
 const app = express();
-app.use(express.json());
-
 
 const allowedOrigins = [
-  "http://localhost:5173",     // local React
-  "https://auth-frontend-dtsr.vercel.app/",
-  "https://auth-frontend-4y99.vercel.app/"
+  "http://localhost:5173",
+  "https://auth-frontend-dtsr.vercel.app",
+  "https://auth-frontend-4y99.vercel.app"
 ];
 
 app.use(cors({
-  origin: allowedOrigins,  // allow your React app
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: function(origin, callback){
+    if(!origin) return callback(null, true); // Postman, etc.
+    if(allowedOrigins.indexOf(origin) === -1){
+      return callback(new Error("CORS Not Allowed"), false);
+    }
+    return callback(null, true);
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true
 }));
 
-// routes import
-import userRouter from "./routes/user.routes.js"
+app.use(express.json());
 
-// routes declaration
-app.use("/api/users", userRouter)
-
-
-
-
+// API routes
+app.use("/api/users", userRouter);
 
 export { app };
