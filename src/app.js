@@ -8,7 +8,8 @@ app.use(express.json());
 
 const allowedOrigins = [
   "http://localhost:5173",     // local React
-  "https://auth-frontend-dtsr.vercel.app/"
+  "https://auth-frontend-dtsr.vercel.app/",
+  "https://auth-frontend-4y99.vercel.app/"
 ];
 
 app.use(cors({
